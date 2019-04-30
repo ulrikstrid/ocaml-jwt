@@ -73,11 +73,11 @@ val kid_of_header : header -> string option
 
 val string_of_header : header -> string
 
-val json_of_header : header -> Yojson.Basic.json
+val json_of_header : header -> Yojson.Basic.t
 
 val header_of_string : string -> header
 
-val header_of_json : Yojson.Basic.json -> header
+val header_of_json : Yojson.Basic.t -> header
 
 (* ----------- Header ---------- *)
 (* ----------------------------- *)
@@ -197,12 +197,12 @@ val string_of_payload :
   payload
 
 val payload_of_json :
-  Yojson.Basic.json ->
+  Yojson.Basic.t ->
   payload
 
 val json_of_payload :
   payload ->
-  Yojson.Basic.json
+  Yojson.Basic.t
 
 val string_of_payload :
   payload ->
@@ -241,4 +241,4 @@ val t_of_token : string -> t
 (* ----------- JWT type ----------- *)
 (* -------------------------------- *)
 
-val verify : alg:string -> jwks:Yojson.Basic.json -> t -> bool
+val verify : alg:string -> jwks:Yojson.Basic.t -> t -> bool
