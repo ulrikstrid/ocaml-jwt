@@ -222,7 +222,14 @@ let find_claim claim payload =
 
 let map f p = List.map f p
 
-let payload_of_json = Yojson.Basic.Util.to_assoc
+let payload_of_json json =
+  List.map
+    (fun x -> match x with
+    | (claim, `String value) -> (claim, value)
+    | (claim, `Int value) -> (claim, string_of_int value)
+    | (claim, value) -> (claim, Yojson.Basic.to_string value)
+    )
+    (Yojson.Basic.Util.to_assoc json)
 
 let payload_of_string str =
   payload_of_json (Yojson.Basic.from_string str)
@@ -234,6 +241,8 @@ let json_of_payload payload =
         match string_of_claim claim with
         | "exp"
         | "iat" -> ((string_of_claim claim), `Int (int_of_string value))
+        | "email_verified" -> ((string_of_claim claim), `Bool (value == "true"))
+        | "updated_at" -> ((string_of_claim claim), `Int (int_of_string value))
         | _ -> ((string_of_claim claim), `String value)
       )
       payload
